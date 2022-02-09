@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes
 
+import com.qualcomm.hardware.bosch.BNO055IMU
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
@@ -7,6 +8,8 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction
 import com.qualcomm.robotcore.util.Range
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation
 import org.firstinspires.ftc.teamcode.input.Controller
 
 /**
@@ -23,16 +26,26 @@ import org.firstinspires.ftc.teamcode.input.Controller
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 @TeleOp(name = "Tele1", group = "Iterative Opmode")
-@Disabled
 class Tele1 : OpMode() {
     // Declare OpMode members.
     private val runtime = ElapsedTime()
-    private var lfDrive: DcMotor = hardwareMap.get(DcMotor::class.java, "leftFrontDrive")
-    private var rfDrive: DcMotor = hardwareMap.get(DcMotor::class.java, "rightFrontDrive")
-    private var lrDrive: DcMotor = hardwareMap.get(DcMotor::class.java, "leftRearDrive")
-    private var rrDrive: DcMotor = hardwareMap.get(DcMotor::class.java, "rightRearDrive")
-    private var controller1: Controller = Controller(gamepad1)
-    private var controller2: Controller = Controller(gamepad2)
+    private var lfDrive: DcMotor? = null
+    private var rfDrive: DcMotor? = null
+    private var lrDrive: DcMotor? = null
+    private var rrDrive: DcMotor? = null
+    private var controller1: Controller? = null
+    private var controller2: Controller? = null
+
+    var imu: BNO055IMU? = null
+
+    private var posx = 0.0
+    private var posy = 0.0
+//    private var posz = 0.0
+    private var velx = 0.0
+    private var vely = 0.0
+//    private var velz = 0.0
+    private var lastAccel = Acceleration()
+    private var lastTime = runtime.seconds()
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -40,13 +53,30 @@ class Tele1 : OpMode() {
     override fun init() {
         telemetry.addData("Status", "Initialized")
 
+        lfDrive= hardwareMap.get(DcMotor::class.java, "leftFrontDrive")
+        rfDrive = hardwareMap.get(DcMotor::class.java, "rightFrontDrive")
+        lrDrive = hardwareMap.get(DcMotor::class.java, "leftRearDrive")
+        rrDrive = hardwareMap.get(DcMotor::class.java, "rightRearDrive")
+
+        controller1 = Controller(gamepad1)
+        controller2 = Controller(gamepad2)
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        lfDrive.setDirection(Direction.FORWARD)
-        lrDrive.setDirection(Direction.FORWARD)
-        rfDrive.setDirection(Direction.REVERSE)
-        rrDrive.setDirection(Direction.REVERSE)
+        lfDrive!!.setDirection(Direction.REVERSE)
+        lrDrive!!.setDirection(Direction.FORWARD)
+        rfDrive!!.setDirection(Direction.FORWARD)
+        rrDrive!!.setDirection(Direction.REVERSE)
+
+        // mumbo jumbo boilerplate from https://stemrobotics.cs.pdx.edu/node/7265
+        val parameters = BNO055IMU.Parameters()
+        parameters.mode                = BNO055IMU.SensorMode.IMU
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC
+        parameters.loggingEnabled      = false
+        imu = hardwareMap.get(BNO055IMU::class.java, "imu")
+        imu!!.initialize(parameters)
+        lastAccel = imu!!.acceleration
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized")
@@ -68,10 +98,34 @@ class Tele1 : OpMode() {
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
     override fun loop() {
-        controller1.update();
-        controller2.update()
+        val newTime = runtime.seconds()
+        val delta = newTime - lastTime
+        controller1!!.update();
+        controller2!!.update()
         
-        driveXYR(controller1.left_stick_x, controller1.left_stick_y, controller1.right_stick_x)
+        driveXYR(controller1!!.left_stick_x, controller1!!.left_stick_y, controller1!!.right_stick_x)
+
+        val newaccel = imu!!.acceleration
+
+        telemetry.addData("accel", "x (%.2f) y (%.2f) z (%.2f)", newaccel.xAccel, newaccel.yAccel, newaccel.zAccel)
+
+        // riemann sum
+        val velChngX = newaccel.xAccel * delta
+        val velChngY = newaccel.yAccel * delta
+//        val velChngZ = newaccel.zAccel * delta
+
+        velx += velChngX
+        vely += velChngY
+//        velz += velChngZ
+
+        telemetry.addData("vel", "x (%.2f) y (%.2f)", velx, vely)
+
+        // same again to get pos
+        posx += velx * delta
+        posy += vely * delta
+//        posz += velz * delta
+
+        telemetry.addData("pos", "x (%.2f) y (%.2f)", posx, posy)
 
         // Show the elapsed game time and wheel power.
 //        telemetry.addData("Status", "Run Time: $runtime")
@@ -82,10 +136,10 @@ class Tele1 : OpMode() {
     fun driveXYR(x: Double, y: Double, r: Double) {
         val r = -r // invert rotation
         // set motor powers, assumed that positive power = forwards motion for wheel, there's often a motor.reverse() function to help with this
-        rfDrive.power = (y - x + r)
-        lfDrive.power = (y + x - r)
-        lrDrive.power = -1 * (y - x - r)
-        rrDrive.power = -1 * (y + x + r)
+        rfDrive!!.power = (y - x + r)
+        lfDrive!!.power = (y + x - r)
+        lrDrive!!.power = -1 * (y - x - r)
+        rrDrive!!.power = -1 * (y + x + r)
     }
 
     /*
