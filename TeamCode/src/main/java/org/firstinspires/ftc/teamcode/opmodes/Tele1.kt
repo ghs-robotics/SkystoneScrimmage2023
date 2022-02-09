@@ -63,9 +63,13 @@ class Tele1 : OpMode() {
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         lfDrive!!.setDirection(Direction.REVERSE)
+        lfDrive!!.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         lrDrive!!.setDirection(Direction.FORWARD)
+        lrDrive!!.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         rfDrive!!.setDirection(Direction.FORWARD)
+        rfDrive!!.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         rrDrive!!.setDirection(Direction.REVERSE)
+        rrDrive!!.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
 
         // mumbo jumbo boilerplate from https://stemrobotics.cs.pdx.edu/node/7265
         val parameters = BNO055IMU.Parameters()
@@ -77,6 +81,11 @@ class Tele1 : OpMode() {
         imu = hardwareMap.get(BNO055IMU::class.java, "imu")
         imu!!.initialize(parameters)
         lastAccel = imu!!.acceleration
+
+        velx = 0.0
+        vely = 0.0
+        posx = 0.0
+        posy = 0.0
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized")
@@ -99,23 +108,29 @@ class Tele1 : OpMode() {
      */
     override fun loop() {
         val newTime = runtime.seconds()
-        val delta: Double = newTime - lastTime
+//        val delta: Double = newTime - lastTime
         lastTime = newTime
 
-        telemetry.addData("delta", "%f", delta)
+
 
         controller1!!.update();
         controller2!!.update()
         
         driveXYR(controller1!!.left_stick_x, controller1!!.left_stick_y, controller1!!.right_stick_x)
 
+
+
         val newaccel = imu!!.linearAcceleration
 
+        // get time difference in seconds (float)
+        val delta = (newaccel.acquisitionTime - lastAccel.acquisitionTime).toDouble() / 1000000000.0
+
+        telemetry.addData("delta", "%f", delta)
         telemetry.addData("accel", "x (%.2f) y (%.2f) z (%.2f)", newaccel.xAccel, newaccel.yAccel, newaccel.zAccel)
 
         // riemann sum
-        val velChngX = newaccel.xAccel * delta
-        val velChngY = newaccel.yAccel * delta
+        val velChngX = (newaccel.xAccel + lastAccel.xAccel) * delta / 2.0 // trapezoid area
+        val velChngY = (newaccel.yAccel + lastAccel.yAccel) * delta / 2.0
 //        val velChngZ = newaccel.zAccel * delta
 
         if (Math.abs(velChngX) > 0.05) {
@@ -146,6 +161,7 @@ class Tele1 : OpMode() {
 //        telemetry.addData("Status", "Run Time: $runtime")
 //        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower)
         telemetry.update()
+        lastAccel = newaccel
     }
 
     // Calculates powers for mecanum wheel drive
