@@ -8,8 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction
 import com.qualcomm.robotcore.util.Range
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation
+import org.firstinspires.ftc.robotcore.external.navigation.*
 import org.firstinspires.ftc.teamcode.input.Controller
 
 /**
@@ -74,6 +73,7 @@ class Tele1 : OpMode() {
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC
         parameters.loggingEnabled      = false
+        parameters.mode                = BNO055IMU.SensorMode.IMU
         imu = hardwareMap.get(BNO055IMU::class.java, "imu")
         imu!!.initialize(parameters)
         lastAccel = imu!!.acceleration
@@ -99,13 +99,17 @@ class Tele1 : OpMode() {
      */
     override fun loop() {
         val newTime = runtime.seconds()
-        val delta = newTime - lastTime
+        val delta: Double = newTime - lastTime
+        lastTime = newTime
+
+        telemetry.addData("delta", "%f", delta)
+
         controller1!!.update();
         controller2!!.update()
         
         driveXYR(controller1!!.left_stick_x, controller1!!.left_stick_y, controller1!!.right_stick_x)
 
-        val newaccel = imu!!.acceleration
+        val newaccel = imu!!.linearAcceleration
 
         telemetry.addData("accel", "x (%.2f) y (%.2f) z (%.2f)", newaccel.xAccel, newaccel.yAccel, newaccel.zAccel)
 
@@ -114,8 +118,13 @@ class Tele1 : OpMode() {
         val velChngY = newaccel.yAccel * delta
 //        val velChngZ = newaccel.zAccel * delta
 
-        velx += velChngX
-        vely += velChngY
+        if (Math.abs(velChngX) > 0.05) {
+            velx += velChngX
+        }
+        if (Math.abs(velChngY) > 0.05) {
+            vely += velChngY
+        }
+
 //        velz += velChngZ
 
         telemetry.addData("vel", "x (%.2f) y (%.2f)", velx, vely)
@@ -127,9 +136,16 @@ class Tele1 : OpMode() {
 
         telemetry.addData("pos", "x (%.2f) y (%.2f)", posx, posy)
 
+        val or = imu!!.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES)
+
+        telemetry.addData("orientation", "(%.2f)", or.firstAngle)
+
+        telemetry.addData("orientation2", "%s", imu!!.angularOrientation.toString())
+
         // Show the elapsed game time and wheel power.
 //        telemetry.addData("Status", "Run Time: $runtime")
 //        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower)
+        telemetry.update()
     }
 
     // Calculates powers for mecanum wheel drive
