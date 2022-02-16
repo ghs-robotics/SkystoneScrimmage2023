@@ -9,6 +9,19 @@ import com.qualcomm.robotcore.util.TypeConversion;
 @I2cSensor(name = "ADXL345 Accelerometer", description = "Acceleration Sensor from Adafruit", xmlTag = "ADXL345")
 public class ADXL345 extends I2cDeviceSynchDevice<I2cDeviceSynch> {
 
+    public enum GRange {
+        TWO(0),
+        FOUR(1),
+        EIGHT(2),
+        SIXTEEN(3);
+
+        public int bVal;
+
+        GRange(int bVal) {
+            this.bVal = bVal;
+        }
+    }
+
     // this sensor (probably) uses address 0x53 followed by a R/W bit
     private final I2cAddr ADDRESS_I2C_DEFAULT_READ = new I2cAddr(0x53);
 //    private final I2cAddr ADDRESS_I2C_DEFAULT_WRITE = new I2cAddr(0xA6);
@@ -28,8 +41,53 @@ public class ADXL345 extends I2cDeviceSynchDevice<I2cDeviceSynch> {
         return "Adafruit ADXL345 Digital Accelerometer";
     }
 
+
+    public void setDataFormatLessRaw(
+            boolean self_test,
+            /*boolean SPI,*/
+            /*boolean int_invert,*/
+            boolean full_range,
+            boolean justify,
+            GRange range) {
+        // data layout:
+        // MSB byte 7: SELF_TEST
+        //     byte 6: SPI
+        //     byte 5: INT_INVERT
+        //     byte 4: unused (must be zero)
+        //     byte 3: FULL_RES
+        //     byte 2: justify
+        //     byte 1: G range high bit
+        // LSB byte 0: G range low bit
+        byte out = 0;
+        out |= (self_test ? 1 : 0) << 6;
+        out |= (full_range ? 1 : 0) << 3;
+        out |= (justify ? 1 : 0) << 2;
+        out |= range.bVal & 0x3; // mask with 0b00000011
+        setDataFormatRaw(out);
+    }
+
     public byte getDeviceIDRaw() {
         return readByte(Register.DEVID);
+    }
+
+    public short getXRaw() {
+        return readShort(Register.X_DATA_0);
+    }
+
+    public short getYRaw() {
+        return readShort(Register.Y_DATA_0);
+    }
+
+    public short getZRaw() {
+        return readShort(Register.Z_DATA_0);
+    }
+
+    public byte getDataFormatRaw() {
+        return readByte(Register.DATA_FORMAT_CONTROL);
+    }
+
+    public void setDataFormatRaw(byte format) {
+        writeByte(Register.DATA_FORMAT_CONTROL, format);
     }
 
     protected void writeShort(final Register reg, short value) {

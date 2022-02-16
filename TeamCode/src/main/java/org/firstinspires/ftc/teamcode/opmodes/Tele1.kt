@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction
 import com.qualcomm.robotcore.util.Range
 import org.firstinspires.ftc.robotcore.external.navigation.*
 import org.firstinspires.ftc.teamcode.input.Controller
+import org.firstinspires.ftc.teamcode.misc.ADXL345
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -35,6 +36,8 @@ class Tele1 : OpMode() {
     private var controller1: Controller? = null
     private var controller2: Controller? = null
 
+    private var adxl345: ADXL345? = null
+
     var imu: BNO055IMU? = null
 
     private var posx = 0.0
@@ -59,6 +62,10 @@ class Tele1 : OpMode() {
 
         controller1 = Controller(gamepad1)
         controller2 = Controller(gamepad2)
+
+        adxl345 = hardwareMap.get(ADXL345::class.java, "acc")
+
+        adxl345!!.setDataFormatLessRaw(false, true, false, ADXL345.GRange.TWO)
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -112,6 +119,13 @@ class Tele1 : OpMode() {
         lastTime = newTime
 
 
+        telemetry.addData("accelerometer device id", adxl345!!.deviceIDRaw)
+
+        telemetry.addData("accelerometer X", adxl345!!.xRaw)
+        telemetry.addData("accelerometer Y", adxl345!!.yRaw)
+        telemetry.addData("accelerometer Z", adxl345!!.zRaw)
+
+        telemetry.addData("accelerometer mode", Integer.toBinaryString(adxl345!!.dataFormatRaw.toInt()))
 
         controller1!!.update();
         controller2!!.update()
@@ -134,7 +148,7 @@ class Tele1 : OpMode() {
 //        val velChngZ = newaccel.zAccel * delta
 
         if (Math.abs(velChngX) > 0.05) {
-            velx += velChngX
+        velx += velChngX
         }
         if (Math.abs(velChngY) > 0.05) {
             vely += velChngY
