@@ -1,4 +1,33 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
-public class Auto {
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.robot.Robot;
+
+@Autonomous
+public class Auto extends LinearOpMode {
+    private Telemetry telemetry;
+    private Robot robot;
+
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        this.telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
+        robot = new Robot(hardwareMap, telemetry);
+
+        waitForStart();
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+        while (opModeIsActive()){
+            robot.cam.initCamera();
+
+        }
+        robot.cam.closeCamera();
+    }
 }
