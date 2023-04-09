@@ -15,8 +15,8 @@ public class Camera {
     private Telemetry telemetry;
     private Pipeline pipeline;
 
-    public static final int PIXEL_HEIGHT = 488;
-    public static final int PIXEL_WIDTH = 800;
+    public static int PIXEL_HEIGHT = 488;
+    public static int PIXEL_WIDTH = 800;
 
     OpenCvCamera cam;
 
@@ -24,9 +24,9 @@ public class Camera {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
 
-        this.pipeline = new Pipeline(telemetry);
         this.cam = OpenCvCameraFactory.getInstance()
                 .createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        this.pipeline = new Pipeline(cam);
     }
 
     public void initCamera(){
@@ -36,6 +36,8 @@ public class Camera {
             @Override
             public void onOpened() {
                 cam.startStreaming(PIXEL_WIDTH, PIXEL_HEIGHT, OpenCvCameraRotation.UPRIGHT);
+                telemetry.addLine("camera opened");
+                telemetry.update();
             }
 
             @Override
@@ -50,6 +52,7 @@ public class Camera {
     }
 
     public void closeCamera(){
+        cam.stopStreaming();
         cam.closeCameraDevice();
     }
 }
