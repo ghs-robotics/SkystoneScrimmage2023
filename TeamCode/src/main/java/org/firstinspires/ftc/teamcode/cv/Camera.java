@@ -15,8 +15,8 @@ public class Camera {
     private Telemetry telemetry;
     private Pipeline pipeline;
 
-    public static int PIXEL_HEIGHT = 488;
-    public static int PIXEL_WIDTH = 800;
+    public static int PIXEL_HEIGHT = 240;
+    public static int PIXEL_WIDTH = 320;
 
     OpenCvCamera cam;
 
