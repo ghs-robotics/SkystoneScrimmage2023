@@ -13,15 +13,29 @@
 
 // Include common definitions from above.
 apply from: '../build.common.gradle'
-apply plugin: 'kotlin-android'
 apply from: '../build.dependencies.gradle'
+
+android {
+
+    packagingOptions {
+        jniLibs {
+            pickFirsts += ['**/*.so']
+        }
+    }
+    namespace = 'org.firstinspires.ftc.teamcode'
+    androidResources {
+        noCompress 'tflite'
+    }
+}
 
 dependencies {
     implementation project(':FtcRobotController')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
-    implementation "androidx.core:core-ktx:1.6.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-}
-repositories {
-    mavenCentral()
+
+    implementation 'org.openftc:easyopencv:1.5.2'
+    implementation 'org.openftc:apriltag:1.1.0'
+
+    //roadrunner + dashboard
+    implementation 'org.apache.commons:commons-math3:3.6.1'
+    implementation 'com.acmerobotics.roadrunner:core:0.5.6'
 }
