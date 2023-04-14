@@ -23,6 +23,7 @@ public class Auto extends LinearOpMode {
 
         while (opModeIsActive()){
             telemetry.addData("bat percent", robot.getBatteryPercentage() + "%");
+            robot.cam.camTelemetry();
             telemetry.update();
         }
         robot.cam.closeCamera();

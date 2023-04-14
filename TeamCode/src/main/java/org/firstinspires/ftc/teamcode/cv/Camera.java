@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.cv;
 
-import com.acmerobotics.dashboard.config.Config;
+import static org.firstinspires.ftc.teamcode.cv.CVConstants.PIXEL_HEIGHT;
+import static org.firstinspires.ftc.teamcode.cv.CVConstants.PIXEL_WIDTH;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -9,14 +11,11 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Config
 public class Camera {
     private HardwareMap hardwareMap;
     private Telemetry telemetry;
     private Pipeline pipeline;
 
-    public static int PIXEL_HEIGHT = 240;
-    public static int PIXEL_WIDTH = 320;
 
     public OpenCvCamera cam;
 
@@ -51,5 +50,16 @@ public class Camera {
     public void closeCamera(){
         cam.stopStreaming();
         cam.closeCameraDevice();
+    }
+
+    public void camTelemetry(){
+        telemetry.addLine();
+        telemetry.addData("Frame Count", cam.getFrameCount());
+        telemetry.addData("FPS", String.format("%.2f", cam.getFps()));
+        telemetry.addData("Total frame time ms", cam.getTotalFrameTimeMs());
+        telemetry.addData("Pipeline time ms", cam.getPipelineTimeMs());
+        telemetry.addData("Overhead time ms", cam.getOverheadTimeMs());
+        telemetry.addData("Theoretical max FPS", cam.getCurrentPipelineMaxFps());
+        telemetry.addLine();
     }
 }
