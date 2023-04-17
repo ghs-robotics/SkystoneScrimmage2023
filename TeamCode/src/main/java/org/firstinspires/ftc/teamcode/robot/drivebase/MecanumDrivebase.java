@@ -1,29 +1,29 @@
-package org.firstinspires.ftc.teamcode.robot;
+package org.firstinspires.ftc.teamcode.robot.drivebase;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class Drivebase {
+public class MecanumDrivebase {
 
     public DcMotor leftFrontDrive;
     public DcMotor leftBackDrive;
     public DcMotor rightFrontDrive;
     public DcMotor rightBackDrive;
 
-    public Drivebase(HardwareMap hardwareMap, Telemetry telemetry){
+    public MecanumDrivebase(HardwareMap hardwareMap, Telemetry telemetry){
 
         // Gets the motor from the hub, make sure the name matches the config on the Driver hub
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "");
-        leftBackDrive = hardwareMap.get(DcMotor.class, "");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "");
+//        leftFrontDrive = hardwareMap.get(DcMotor.class, "");
+//        leftBackDrive = hardwareMap.get(DcMotor.class, "");
+//        rightFrontDrive = hardwareMap.get(DcMotor.class, "");
+//        rightBackDrive = hardwareMap.get(DcMotor.class, "");
 
-        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         telemetry.update();
     }
