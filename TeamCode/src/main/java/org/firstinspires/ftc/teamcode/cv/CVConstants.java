@@ -8,6 +8,8 @@ public class CVConstants {
     public static int PIXEL_HEIGHT = 240;
     public static int PIXEL_WIDTH = 320;
 
+    public static int FILTER_TYPE = 0;
+    public static boolean FILTER = true;
 
     // HSV constants
     public static int DARK_H = 180;
@@ -32,5 +34,6 @@ public class CVConstants {
 
 
     // grayscale constants
-
+    public static int GRAY_LOWER = 101;
+    public static int GRAY_UPPER = 139;
 }
