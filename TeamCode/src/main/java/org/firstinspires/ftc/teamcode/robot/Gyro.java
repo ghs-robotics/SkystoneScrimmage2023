@@ -37,16 +37,6 @@ public class Gyro {
         return yaw;
     }
 
-    public double getSecond(AngleUnit unit) {
-        double pitch = getOrientation(unit)[1];
-        return pitch;
-    }
-
-    public double getThird(AngleUnit unit) {
-        double roll = getOrientation(unit)[0];
-        return roll;
-    }
-
     public void reset() {
         gyro.resetYaw();
     }

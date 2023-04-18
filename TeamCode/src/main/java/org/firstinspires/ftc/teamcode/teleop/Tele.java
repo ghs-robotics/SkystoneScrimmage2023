@@ -30,8 +30,8 @@ public class Tele extends LinearOpMode {
             controls.resetGyro(gamepad1.left_bumper, gamepad1.right_bumper);
 
             telemetry.addData("1", robot.gyro.getHeading(AngleUnit.DEGREES));
-            telemetry.addData("2", robot.gyro.getSecond(AngleUnit.DEGREES));
-            telemetry.addData("3", robot.gyro.getThird(AngleUnit.DEGREES));
+//            telemetry.addData("2", robot.gyro.getSecond(AngleUnit.DEGREES));
+//            telemetry.addData("3", robot.gyro.getThird(AngleUnit.DEGREES));
             telemetry.update();
         }
     }

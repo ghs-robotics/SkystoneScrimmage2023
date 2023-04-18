@@ -12,14 +12,14 @@ public class CVConstants {
     public static boolean FILTER = true;
 
     // HSV constants
-    public static int DARK_H = 180;
-    public static int LIGHT_H = 180;
+    public static int DARK_H = 170;
+    public static int LIGHT_H = 30;
 
-    public static int DARK_S = 0;
-    public static int LIGHT_S = 0;
+    public static int DARK_S = 150;
+    public static int LIGHT_S = 40;
 
-    public static int DARK_V = 20;
-    public static int LIGHT_V = 90;
+    public static int DARK_V = 255;
+    public static int LIGHT_V = 218;
 
 
     // RGB constants
