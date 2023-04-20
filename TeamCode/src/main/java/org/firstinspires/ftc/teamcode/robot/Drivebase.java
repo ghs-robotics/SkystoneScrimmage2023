@@ -15,10 +15,10 @@ public class Drivebase {
     public Drivebase(HardwareMap hardwareMap, Telemetry telemetry){
 
         // Gets the motor from the hub, make sure the name matches the config on the Driver hub
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "");
-        leftBackDrive = hardwareMap.get(DcMotor.class, "");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "");
+        leftFrontDrive = hardwareMap.get(DcMotor.class, "tarquinius");
+        leftBackDrive = hardwareMap.get(DcMotor.class, "jalsene");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "mctaggart");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "bob");
 
         leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -28,12 +28,12 @@ public class Drivebase {
         telemetry.update();
     }
 
-    public void calculateDrivePowers(double y, double x, double rot){
+    public void calculateAndSetDrivePowers(double y, double x, double rot){
 
-        double leftFrontPower = y + x + rot;
-        double leftBackPower = -y + x + rot;
-        double rightFrontPower = y - x - rot;
-        double rightBackPower = -y - x - rot;
+        double leftFrontPower = y - x + rot;
+        double leftBackPower = y + x + rot;
+        double rightFrontPower = y + x - rot;
+        double rightBackPower = y - x - rot;
 
         setDrivePowers(leftFrontPower, leftBackPower, rightFrontPower, rightBackPower);
     }
