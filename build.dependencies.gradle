@@ -24,7 +24,7 @@ dependencies {
     implementation 'org.firstinspires.ftc:gameAssets-PowerPlay:1.0.0'
 
     //opencv
-    implementation 'org.openftc:easyopencv:1.5.2'
+    implementation 'org.openftc:easyopencv:1.6.2'
 
     //ftc dashboard + road runner
     implementation 'com.acmerobotics.dashboard:dashboard:0.4.5'
