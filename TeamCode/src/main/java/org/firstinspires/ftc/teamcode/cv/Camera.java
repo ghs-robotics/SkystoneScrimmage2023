@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.cv;
 
-import static org.firstinspires.ftc.teamcode.cv.CVConstants.PIXEL_HEIGHT;
-import static org.firstinspires.ftc.teamcode.cv.CVConstants.PIXEL_WIDTH;
+import static org.firstinspires.ftc.teamcode.cv.ColorFilterConstants.PIXEL_HEIGHT;
+import static org.firstinspires.ftc.teamcode.cv.ColorFilterConstants.PIXEL_WIDTH;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -19,9 +19,9 @@ public class Camera {
 
     public OpenCvCamera cam;
 
-    public Camera(HardwareMap h, Telemetry t){
-        hardwareMap = h;
-        telemetry = t;
+    public Camera(HardwareMap hardwareMap, Telemetry telemetry){
+        this.hardwareMap = hardwareMap;
+        this.telemetry = telemetry;
 
         cam = OpenCvCameraFactory.getInstance()
                 .createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
@@ -61,5 +61,8 @@ public class Camera {
         telemetry.addData("Overhead time ms", cam.getOverheadTimeMs());
         telemetry.addData("Theoretical max FPS", cam.getCurrentPipelineMaxFps());
         telemetry.addLine();
+
+        telemetry.addData("display type", pipeline.display);
     }
+
 }
