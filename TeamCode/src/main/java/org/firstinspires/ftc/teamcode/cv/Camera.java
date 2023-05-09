@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.cv;
 
-import static org.firstinspires.ftc.teamcode.cv.ColorFilterConstants.PIXEL_HEIGHT;
-import static org.firstinspires.ftc.teamcode.cv.ColorFilterConstants.PIXEL_WIDTH;
+import static org.firstinspires.ftc.teamcode.cv.dashboard.CVTestingSettings.testingPipe;
+import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.PIXEL_HEIGHT;
+import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.PIXEL_WIDTH;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -10,12 +11,13 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 public class Camera {
     private HardwareMap hardwareMap;
     private Telemetry telemetry;
-    private Pipeline pipeline;
 
+    private OpenCvPipeline pipeline;
 
     public OpenCvCamera cam;
 
@@ -25,7 +27,11 @@ public class Camera {
 
         cam = OpenCvCameraFactory.getInstance()
                 .createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
-        pipeline = new Pipeline(cam);
+
+        if (testingPipe)
+            pipeline = new TestingPipeline(cam);
+        else
+            pipeline = new Pipeline(cam);
     }
 
     public void initCamera(){
@@ -61,8 +67,6 @@ public class Camera {
         telemetry.addData("Overhead time ms", cam.getOverheadTimeMs());
         telemetry.addData("Theoretical max FPS", cam.getCurrentPipelineMaxFps());
         telemetry.addLine();
-
-        telemetry.addData("display type", pipeline.display);
     }
 
 }

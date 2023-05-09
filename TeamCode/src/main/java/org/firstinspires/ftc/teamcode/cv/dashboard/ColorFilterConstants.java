@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.cv;
+package org.firstinspires.ftc.teamcode.cv.dashboard;
 
 import com.acmerobotics.dashboard.config.Config;
 
@@ -7,10 +7,6 @@ public class ColorFilterConstants {
     // Camera display pixel resolution
     public static int PIXEL_HEIGHT = 240;
     public static int PIXEL_WIDTH = 320;
-
-    public static int FILTER_TYPE = 0;
-    public static boolean FILTER = true;
-    public static boolean CANNY = false;
 
     // found HSV constants but need to find optimal difference
     public static int BLOCK_DARK_H = 155;
