@@ -18,6 +18,7 @@ import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.U
 import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.UPPER_G;
 import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.UPPER_R;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
@@ -35,6 +36,8 @@ public class TestingPipeline extends OpenCvPipeline {
 
     OpenCvCamera cam;
 
+    Telemetry telemetry;
+
     Mat grayscale = new Mat();
     Mat hsv = new Mat();
     Mat rgb = new Mat();
@@ -42,10 +45,10 @@ public class TestingPipeline extends OpenCvPipeline {
 
     boolean zone1;
     boolean zone2;
-    boolean zone3;
 
-    public TestingPipeline (OpenCvCamera camera){
+    public TestingPipeline (OpenCvCamera camera, Telemetry telemetry){
         cam = camera;
+        this.telemetry = telemetry;
     }
 
     @Override
@@ -124,6 +127,14 @@ public class TestingPipeline extends OpenCvPipeline {
         else
             cam.resumeViewport();
 
+    }
+
+    public void getTelemetry(){
+        telemetry.addLine();
+        telemetry.addLine("Pipeline telemetry");
+        telemetry.addData("channels: ", display.channels());
+        telemetry.addData("dump:     ", display.dump());
+        telemetry.addLine();
     }
 
 //    public boolean tuneCamera(){
