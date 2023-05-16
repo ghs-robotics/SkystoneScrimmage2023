@@ -9,6 +9,7 @@ import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.B
 import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.BLOCK_LIGHT_S;
 import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.BLOCK_LIGHT_V;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
@@ -18,7 +19,10 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 public class Pipeline extends OpenCvPipeline {
     boolean viewportPaused = false;
+
     OpenCvCamera cam;
+
+    Telemetry telemetry;
 
     Mat hsv = new Mat();
     Mat display = new Mat();
@@ -26,8 +30,9 @@ public class Pipeline extends OpenCvPipeline {
     boolean zone1;
     boolean zone2;
 
-    public Pipeline (OpenCvCamera camera){
+    public Pipeline (OpenCvCamera camera, Telemetry telemetry){
         cam = camera;
+        this.telemetry = telemetry;
     }
 
     @Override
@@ -71,6 +76,14 @@ public class Pipeline extends OpenCvPipeline {
         else
             cam.resumeViewport();
 
+    }
+
+    public void getTelemetry(){
+        telemetry.addLine();
+        telemetry.addLine("Pipeline telemetry");
+        telemetry.addData("channels: ", display.channels());
+        telemetry.addData("dump:     ", display.dump());
+        telemetry.addLine();
     }
 
 }

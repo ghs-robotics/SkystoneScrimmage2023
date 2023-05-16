@@ -17,7 +17,7 @@ public class Camera {
     private HardwareMap hardwareMap;
     private Telemetry telemetry;
 
-    private TestingPipeline pipeline;
+    public TestingPipeline pipeline;
 
     public OpenCvCamera cam;
 
@@ -28,7 +28,7 @@ public class Camera {
         cam = OpenCvCameraFactory.getInstance()
                 .createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
 
-        pipeline = new TestingPipeline(cam);
+        pipeline = new TestingPipeline(cam, telemetry);
     }
 
     public void initCamera(){

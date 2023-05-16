@@ -17,5 +17,6 @@ public class AutoActions {
 
     public void getTelemetry(){
         robot.cam.camTelemetry();
+        robot.cam.pipeline.getTelemetry();
     }
 }
