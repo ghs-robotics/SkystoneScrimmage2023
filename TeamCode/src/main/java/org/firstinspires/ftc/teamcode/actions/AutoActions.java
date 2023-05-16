@@ -5,9 +5,15 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 
 public class AutoActions {
     Robot robot;
+    fieldSide side;
 
-    public AutoActions(Robot bot){
+    public AutoActions(Robot bot, fieldSide side){
         robot = bot;
+        this.side = side;
+    }
+
+    public void runSet(){
+
     }
 
     public void initRobot(){
@@ -19,4 +25,10 @@ public class AutoActions {
         robot.cam.camTelemetry();
         robot.cam.pipeline.getTelemetry();
     }
+
+    public enum fieldSide{
+        LEFT,
+        RIGHT
+    }
 }
+
