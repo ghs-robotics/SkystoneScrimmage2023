@@ -14,6 +14,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 public class Gyro {
 
+    /* What (I think) IMU is: Inertial Measurement Unit, provides the orientation of the robot and "angular velocity",
+    it's speed/what direction in whatever angular (rotational?) direction */
+
     IMU gyro;
     Orientation orientation;
     RevHubOrientationOnRobot revOrientation;
@@ -23,6 +26,8 @@ public class Gyro {
 
     public Gyro(HardwareMap hardwareMap) {
         gyro = hardwareMap.get(IMU.class, "imu");
+        /* Intrinsic: The coordinate system moves along with the rotational axis (the gyro?),
+        so the placement of things may change but their coordinates may not? */
         orientation = new Orientation(AxesReference.INTRINSIC, AxesOrder.ZYX, DEGREES, 0, 0, 0, 0);
         revOrientation = new RevHubOrientationOnRobot(orientation);
         IMU.Parameters parameters = new IMU.Parameters(revOrientation);
