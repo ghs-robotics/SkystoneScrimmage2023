@@ -76,6 +76,11 @@ public class TestingPipeline extends OpenCvPipeline {
             return 3;
     }
 
+    private void setBlobParams(){
+
+    }
+
+
     private void detectBlob(Mat in){
 
     }
