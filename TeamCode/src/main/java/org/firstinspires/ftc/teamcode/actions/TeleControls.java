@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.actions;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
-public class Controls {
+public class TeleControls {
     Robot robot;
 
-    public Controls(Robot bot){
+    public TeleControls(Robot bot){
         robot = bot;
     }
 

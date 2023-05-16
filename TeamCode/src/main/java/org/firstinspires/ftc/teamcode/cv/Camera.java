@@ -17,7 +17,7 @@ public class Camera {
     private HardwareMap hardwareMap;
     private Telemetry telemetry;
 
-    private OpenCvPipeline pipeline;
+    private TestingPipeline pipeline;
 
     public OpenCvCamera cam;
 
@@ -28,10 +28,7 @@ public class Camera {
         cam = OpenCvCameraFactory.getInstance()
                 .createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
 
-        if (testingPipe)
-            pipeline = new TestingPipeline(cam);
-        else
-            pipeline = new Pipeline(cam);
+        pipeline = new TestingPipeline(cam);
     }
 
     public void initCamera(){
@@ -67,6 +64,10 @@ public class Camera {
         telemetry.addData("Overhead time ms", cam.getOverheadTimeMs());
         telemetry.addData("Theoretical max FPS", cam.getCurrentPipelineMaxFps());
         telemetry.addLine();
+    }
+
+    public int getZone(){
+        return pipeline.getZone();
     }
 
 }

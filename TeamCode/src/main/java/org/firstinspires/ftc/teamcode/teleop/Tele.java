@@ -4,18 +4,19 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.actions.TeleControls;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
 @TeleOp
 public class Tele extends LinearOpMode {
     Robot robot;
-    Controls controls;
+    TeleControls controls;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         robot = new Robot(hardwareMap, telemetry);
-        controls = new Controls(robot);
+        controls = new TeleControls(robot);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();

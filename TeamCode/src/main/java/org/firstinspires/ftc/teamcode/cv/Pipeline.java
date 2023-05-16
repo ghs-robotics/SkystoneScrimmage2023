@@ -23,6 +23,9 @@ public class Pipeline extends OpenCvPipeline {
     Mat hsv = new Mat();
     Mat display = new Mat();
 
+    boolean zone1;
+    boolean zone2;
+
     public Pipeline (OpenCvCamera camera){
         cam = camera;
     }
@@ -38,6 +41,15 @@ public class Pipeline extends OpenCvPipeline {
             Imgproc.Canny(display, display, 100, 122, 3, false);
 
         return display;
+    }
+
+    public int getZone(){
+        if (zone1)
+            return 1;
+        else if (zone2)
+            return 2;
+        else
+            return 3;
     }
 
     private Mat processHSV(Mat input){

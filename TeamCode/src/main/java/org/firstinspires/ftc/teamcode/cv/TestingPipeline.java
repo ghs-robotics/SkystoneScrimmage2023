@@ -42,7 +42,6 @@ public class TestingPipeline extends OpenCvPipeline {
 
     boolean zone1;
     boolean zone2;
-    boolean zone3;
 
     public TestingPipeline (OpenCvCamera camera){
         cam = camera;
