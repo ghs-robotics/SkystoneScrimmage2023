@@ -80,7 +80,6 @@ public class TestingPipeline extends OpenCvPipeline {
     }
 
     private void setBlobParams(){
-
     }
 
 

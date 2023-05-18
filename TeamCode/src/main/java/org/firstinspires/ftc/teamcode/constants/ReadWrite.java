@@ -14,8 +14,8 @@ public class ReadWrite {
     private static Scanner hsvConstants;
 
     public ReadWrite(){
-        hsvC = new File("src/constants/HSVConstants.txt");
-        autoI = new File("src/constants/AutoInstruction.txt");
+        hsvC = new File("teamcode/constants/HSVConstants.txt");
+        autoI = new File("teamcode/constants/AutoInstruction.txt");
 
         try {
             hsvConstants = new Scanner(hsvC);
