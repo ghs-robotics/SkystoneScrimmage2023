@@ -7,11 +7,11 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 //In which I have no clue what I'm doing!!! But I'm trying my best!!!! ;-;
 // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHH
 
-public class liftBase {
+public class Lift {
 
     private DcMotor liftDrive;
 
-    public void liftBase(HardwareMap hardwareMap, Telemetry telemetry) {
+    public Lift(HardwareMap hardwareMap, Telemetry telemetry) {
 
         liftDrive = hardwareMap.get(DcMotor.class, "lift");
         telemetry.update();
