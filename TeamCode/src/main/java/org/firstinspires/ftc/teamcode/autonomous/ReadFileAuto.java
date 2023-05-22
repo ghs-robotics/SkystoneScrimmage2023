@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.actions.AutoActions;
 import org.firstinspires.ftc.teamcode.constants.ReadWrite;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
+@Autonomous
 public class ReadFileAuto extends LinearOpMode {
     private Robot robot;
     private AutoActions actions;
@@ -14,11 +16,11 @@ public class ReadFileAuto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap, telemetry);
 
-        actions.initRobot();
-
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
+        
+        robot.cam.initCamera();
 
         while (opModeIsActive()){
             telemetry.addData("auto", ReadWrite.getAutoInstructions());
