@@ -13,15 +13,23 @@
 
 // Include common definitions from above.
 apply from: '../build.common.gradle'
-apply plugin: 'kotlin-android'
 apply from: '../build.dependencies.gradle'
+
+android {
+
+    packagingOptions {
+        jniLibs {
+            pickFirsts += ['**/*.so']
+        }
+    }
+    namespace = 'org.firstinspires.ftc.teamcode'
+    androidResources {
+        noCompress 'tflite'
+    }
+}
 
 dependencies {
     implementation project(':FtcRobotController')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
-    implementation "androidx.core:core-ktx:1.6.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-}
-repositories {
-    mavenCentral()
+
 }

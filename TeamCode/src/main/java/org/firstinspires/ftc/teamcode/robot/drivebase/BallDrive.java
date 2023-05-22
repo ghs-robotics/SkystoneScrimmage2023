@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class BallDrive implements Drivebase{
+public class BallDrive {
 
     private DcMotor leftDrive;
     private DcMotor rightDrive;
@@ -36,7 +36,7 @@ public class BallDrive implements Drivebase{
         backDrive.setPower(bp);
     }
 
-    @Override
+
     public void calculateDrivePowers(double x, double y, double rot) {
 
         double leftPower = y - rot;

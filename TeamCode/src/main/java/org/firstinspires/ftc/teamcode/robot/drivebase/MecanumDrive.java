@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class MecanumDrive implements Drivebase{
+public class MecanumDrive {
 
     private DcMotor leftFrontDrive;
     private DcMotor leftBackDrive;
@@ -41,7 +41,6 @@ public class MecanumDrive implements Drivebase{
         rightBackDrive.setPower(rb);
     }
 
-    @Override
     public void calculateDrivePowers(double x, double y, double rot) {
         double leftFrontPower = y - x + rot;
         double leftBackPower = y + x + rot;

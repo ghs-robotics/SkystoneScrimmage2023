@@ -14,7 +14,7 @@ public class Tele extends LinearOpMode {
         telemetry.update();
         waitForStart();
         while (opModeIsActive()){
-            jerry.drive.calculateAndSetDrivePowers(gamepad1.right_stick_x, gamepad1.left_stick_x, gamepad1.left_stick_y);
+            jerry.drive.calculateDrivePowers(gamepad1.right_stick_x, gamepad1.left_stick_x, gamepad1.left_stick_y);
             telemetry.update();
         }
 

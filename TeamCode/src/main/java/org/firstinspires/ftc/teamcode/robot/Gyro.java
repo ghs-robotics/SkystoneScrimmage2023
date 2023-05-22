@@ -52,10 +52,23 @@ public class Gyro {
 
     }
 
+    // Rotation - main one to use
 // getting the heading/yaw, method
     public double getHeading(AngleUnit unit) {
         double yaw = getOrientation(unit)[0];
         return yaw;
+    }
+
+    // up and down x axis
+    public double getPitch(AngleUnit unit){
+        double pitch = getOrientation(unit)[1];
+        return pitch;
+    }
+
+    // up and down y axis
+    public double getRoll(AngleUnit unit){
+        double roll = getOrientation(unit)[2];
+        return roll;
     }
 
 //resetting yaw method, orientation is relative to this
