@@ -33,4 +33,18 @@ public class TeleControls {
         if (bumper1 && bumper2)
             robot.gyro.reset();
     }
+
+    public void driveLift(double leftStickY){
+        if (leftStickY != 0)
+            robot.arm.runLift(leftStickY);
+    }
+
+    public void runArm(boolean button){
+        if (button)
+            robot.arm.moveGripper();
+    }
+
+    public void driveLiftToPos(){
+
+    }
 }

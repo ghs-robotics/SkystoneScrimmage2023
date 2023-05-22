@@ -15,6 +15,8 @@ public class Robot {
     public BallDrive drive;
     public Gyro gyro;
 
+    public Arm arm;
+
     public Camera cam;
 
     private HardwareMap hardwareMap;
@@ -24,9 +26,10 @@ public class Robot {
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
 
-
         drive = new BallDrive(hardwareMap, telemetry);
         gyro = new Gyro(hardwareMap);
+
+        arm = new Arm(hardwareMap, telemetry);
 
         cam = new Camera(hardwareMap, telemetry);
 
