@@ -7,16 +7,14 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.cv.Camera;
-import org.firstinspires.ftc.teamcode.robot.drivebase.BallDrivebase;
-import org.firstinspires.ftc.teamcode.robot.drivebase.MecanumDrivebase;
+import org.firstinspires.ftc.teamcode.robot.drivebase.BallDrive;
 
 /**
  * @version 0.1
  */
 
 public class Robot {
-    public MecanumDrivebase drive;
-//    public BallDrivebase drive;
+    public BallDrive drive;
     public Gyro gyro;
 
     public Camera cam;
@@ -32,8 +30,8 @@ public class Robot {
         dashboard = FtcDashboard.getInstance();
         this.telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
-        drive = new MecanumDrivebase(hardwareMap, telemetry);
         gyro = new Gyro(hardwareMap);
+        drive = new BallDrive(hardwareMap, telemetry);
 
         cam = new Camera(hardwareMap, telemetry);
 

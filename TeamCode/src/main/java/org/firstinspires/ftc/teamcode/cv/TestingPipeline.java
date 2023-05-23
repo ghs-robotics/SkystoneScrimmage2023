@@ -21,12 +21,15 @@ import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.U
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Scalar;
 import org.opencv.features2d.SimpleBlobDetector;
 import org.opencv.features2d.SimpleBlobDetector_Params;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
+
+import java.util.ArrayList;
 
 public class TestingPipeline extends OpenCvPipeline {
     boolean viewportPaused = false;
@@ -42,6 +45,11 @@ public class TestingPipeline extends OpenCvPipeline {
     Mat hsv = new Mat();
     Mat rgb = new Mat();
     Mat display = new Mat();
+
+    Mat mask = new Mat();
+    Mat contour = new Mat();
+
+    ArrayList<MatOfPoint> pointsOfContour = new ArrayList<MatOfPoint>();
 
     boolean zone1;
     boolean zone2;
@@ -78,14 +86,22 @@ public class TestingPipeline extends OpenCvPipeline {
         else
             return 3;
     }
+// TODO:
+//    public boolean seeBlock(){
+//        Imgproc.findContours(mask, pointsOfContour, contour, 3,1);
+//        Core.sort(contour, contour, 0);
+//
+//
+//    }
 
-    private void setBlobParams(){
-    }
-
-
-    private void detectBlob(Mat in){
-
-    }
+//
+//    private void setBlobParams(){
+//    }
+//
+//
+//    private void detectBlob(Mat in){
+//
+//    }
 
 
     private Mat processBGR(Mat input){
@@ -111,9 +127,10 @@ public class TestingPipeline extends OpenCvPipeline {
         Scalar lightRange = new Scalar(BLOCK_LIGHT_H, BLOCK_LIGHT_S, BLOCK_LIGHT_V);
         Scalar darkRange = new Scalar(BLOCK_DARK_S, BLOCK_DARK_H, BLOCK_DARK_V);
 
-        if (FILTER)
+        if (FILTER) {
+            Core.inRange(input, lightRange, darkRange, mask);
             Core.inRange(input, lightRange, darkRange, input);
-
+        }
         return input;
     }
 
