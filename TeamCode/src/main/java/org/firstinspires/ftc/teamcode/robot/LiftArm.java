@@ -9,22 +9,23 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 //In which I have no clue what I'm doing!!! But I'm trying my best!!!! ;-;
 // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHH
 
-public class Arm {
+public class LiftArm {
     private DcMotor liftMotor;
 
-    private Servo leftGripper;
-    private Servo rightGripper;
+    private Servo gripper;
 
     Telemetry telemetry;
+
+    private double liftPosition;
+    private double gripperPosition;
 
     private boolean grippingBlock;
     private int target;
 
-    public Arm(HardwareMap hardwareMap, Telemetry telemetry) {
+    public LiftArm(HardwareMap hardwareMap, Telemetry telemetry) {
         liftMotor = hardwareMap.get(DcMotor.class, "lift");
 
-        leftGripper = hardwareMap.get(Servo.class, "lgripper");
-        rightGripper = hardwareMap.get(Servo.class, "rgripper");
+        gripper = hardwareMap.get(Servo.class, "gripper");
 
         this.telemetry = telemetry;
         telemetry.update();
@@ -47,20 +48,14 @@ public class Arm {
 
     public void moveGripper(){
         if (grippingBlock){
-            leftGripper.setPosition(0.5);
-            rightGripper.setPosition(0);
+            gripper.setPosition(0.5);
         } else {
-            leftGripper.setPosition(0);
-            rightGripper.setPosition(0.5);
+            gripper.setPosition(0);
         }
 
         grippingBlock = !grippingBlock;
     }
 
-    public void getTelemetry(){
-        telemetry.addData("lift encoder", liftMotor.getCurrentPosition());
-        telemetry.addData("next target", target);
-    }
 
 }
 

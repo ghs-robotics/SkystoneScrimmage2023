@@ -15,7 +15,8 @@ public class Robot {
     public BallDrive drive;
     public Gyro gyro;
 
-    public Arm arm;
+    public LiftArm arm;
+    public Claw claw;
 
     public Camera cam;
 
@@ -29,7 +30,8 @@ public class Robot {
         drive = new BallDrive(hardwareMap, telemetry);
         gyro = new Gyro(hardwareMap);
 
-        arm = new Arm(hardwareMap, telemetry);
+        arm = new LiftArm(hardwareMap, telemetry);
+        claw = new Claw(hardwareMap, telemetry);
 
         cam = new Camera(hardwareMap, telemetry);
 

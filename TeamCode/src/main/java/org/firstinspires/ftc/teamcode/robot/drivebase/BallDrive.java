@@ -12,6 +12,10 @@ public class BallDrive {
     private DcMotor rightDrive;
     private DcMotor backDrive;
 
+    private double leftPower;
+    private double rightPower;
+    private double backPower;
+
 
     public BallDrive(HardwareMap hardwareMap, Telemetry telemetry){
 
@@ -30,19 +34,18 @@ public class BallDrive {
         telemetry.update();
     }
 
-    public void setDrivePowers(double lp, double rp, double bp) {
-        leftDrive.setPower(lp);
-        rightDrive.setPower(rp);
-        backDrive.setPower(bp);
-    }
-
 
     public void calculateDrivePowers(double x, double y, double rot) {
+        leftPower = y - rot;
+        rightPower = y + rot;
+        backPower = x ;
 
-        double leftPower = y - rot;
-        double rightPower = y + rot;
-        double backPower = x ;
+        setDrivePowers();
+    }
 
-        setDrivePowers(leftPower,rightPower,backPower);
+    private void setDrivePowers() {
+        leftDrive.setPower(leftPower);
+        rightDrive.setPower(rightPower);
+        backDrive.setPower(backPower);
     }
 }
