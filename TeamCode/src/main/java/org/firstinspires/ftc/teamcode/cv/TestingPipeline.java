@@ -22,12 +22,14 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.features2d.SimpleBlobDetector;
 import org.opencv.features2d.SimpleBlobDetector_Params;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
+import org.tensorflow.lite.support.image.ImageProcessor;
 
 import java.util.ArrayList;
 
@@ -47,9 +49,6 @@ public class TestingPipeline extends OpenCvPipeline {
     Mat display = new Mat();
 
     Mat mask = new Mat();
-    Mat contour = new Mat();
-
-    ArrayList<MatOfPoint> pointsOfContour = new ArrayList<MatOfPoint>();
 
     boolean zone1;
     boolean zone2;
@@ -86,13 +85,23 @@ public class TestingPipeline extends OpenCvPipeline {
         else
             return 3;
     }
-// TODO:
-//    public boolean seeBlock(){
-//        Imgproc.findContours(mask, pointsOfContour, contour, 3,1);
-//        Core.sort(contour, contour, 0);
-//
-//
-//    }
+
+    public Mat seeBlock(){
+        Scalar color = new Scalar(0, 0, 0);
+
+        Mat binary = new Mat(mask.rows(), mask.cols(), mask.type(), new Scalar(0));
+        Mat contour = new Mat();
+        ArrayList<MatOfPoint> pointsOfContour = new ArrayList<MatOfPoint>();
+
+        Imgproc.threshold(mask, binary, 100, 255, Imgproc.THRESH_BINARY_INV);
+        Imgproc.findContours(binary, pointsOfContour, contour, 3,1);
+
+        Imgproc.drawContours(mask, pointsOfContour, -1, color, 2, Imgproc.LINE_8,
+                contour, 2, new Point());
+
+        return contour;
+
+    }
 
 //
 //    private void setBlobParams(){
