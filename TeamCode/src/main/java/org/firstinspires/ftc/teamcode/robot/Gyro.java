@@ -43,11 +43,14 @@ public class Gyro {
          Angle unit is in degrees*/
         //Orientation: Saying what side is facing where and the angle of the bottom if the hub is upright
         orientation = new Orientation(AxesReference.INTRINSIC, AxesOrder.ZYX, DEGREES, 0, 0, 0, 0);
+
         // "Constructs a RevHubOrientationOnRobot for a REV Hub that is mounted at any arbitrary angle on a robot using an Orientation object."
         revOrientation = new RevHubOrientationOnRobot(orientation);
+
         //Passing on orientation info to IMU
         IMU.Parameters parameters = new IMU.Parameters(revOrientation);
-        //initializing the gyro
+
+        //initializing the gyro, passing on the info using parameters
         gyro.initialize(parameters);
 
     }
