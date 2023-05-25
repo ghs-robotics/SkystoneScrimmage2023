@@ -1,10 +1,13 @@
 repositories {
     mavenCentral()
     google() // Needed for androidx
-    jcenter()  // Needed for tensorflow-lite
     flatDir {
         dirs rootProject.file('libs')
     }
+
+    //ftc dashboard + road runner
+    maven { url = 'https://maven.brott.dev/' }
+
 }
 
 dependencies {
@@ -19,5 +22,17 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-lite-task-vision:0.2.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'org.firstinspires.ftc:gameAssets-PowerPlay:1.0.0'
+
+    //opencv
+    implementation 'org.openftc:easyopencv:1.6.2'
+
+//    //ftc dashboard + road runner
+//    implementation 'com.acmerobotics.dashboard:dashboard:0.4.5'
+
+    //roadrunner + dashboard (maybe?)
+//    implementation 'org.apache.commons:commons-math3:3.6.1'
+//    implementation 'com.acmerobotics.roadrunner:core:0.5.6'
+
+
 }
 

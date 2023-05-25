@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.robot;
+package org.firstinspires.ftc.teamcode.robot.drivebase;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -6,16 +6,18 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class    BallDrivebase {
+public class BallDrive {
 
     private DcMotor leftDrive;
-
     private DcMotor rightDrive;
-
     private DcMotor backDrive;
 
+    private double leftPower;
+    private double rightPower;
+    private double backPower;
 
-    public BallDrivebase(HardwareMap hardwareMap, Telemetry telemetry){
+
+    public BallDrive(HardwareMap hardwareMap, Telemetry telemetry){
 
         // Gets the motor from the hub, make sure the name matches the config on the Driver hub
         leftDrive = hardwareMap.get(DcMotor.class, "left");
@@ -32,19 +34,18 @@ public class    BallDrivebase {
         telemetry.update();
     }
 
-    public void setDrivePowers(double lp, double rp, double bp) {
-        leftDrive.setPower(lp);
-        rightDrive.setPower(rp);
-        backDrive.setPower(bp);
+
+    public void calculateDrivePowers(double x, double y, double rot) {
+        leftPower = y - rot;
+        rightPower = y + rot;
+        backPower = x ;
+
+        setDrivePowers();
     }
 
-    public void calculateAndSetDrivePowers(double y, double x, double rot){
-
-        double leftPower = y - rot;
-        double rightPower = y + rot;
-        double backPower = x ;
-
-        setDrivePowers(leftPower,rightPower,backPower);
+    private void setDrivePowers() {
+        leftDrive.setPower(leftPower);
+        rightDrive.setPower(rightPower);
+        backDrive.setPower(backPower);
     }
-
 }
