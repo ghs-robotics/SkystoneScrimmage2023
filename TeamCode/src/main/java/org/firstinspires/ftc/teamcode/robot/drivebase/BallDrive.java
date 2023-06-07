@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class BallDrive {
-
     private DcMotor leftDrive;
     private DcMotor rightDrive;
     private DcMotor backDrive;
@@ -47,5 +46,13 @@ public class BallDrive {
         leftDrive.setPower(leftPower);
         rightDrive.setPower(rightPower);
         backDrive.setPower(backPower);
+    }
+
+    public int getX() {
+        return backDrive.getCurrentPosition();
+    }
+
+    public int getY() {
+        return leftDrive.getCurrentPosition();
     }
 }

@@ -21,7 +21,7 @@ public class LiftArm {
 
     private boolean grippingBlock;
     private int target;
-
+//finding the motor/servo
     public LiftArm(HardwareMap hardwareMap, Telemetry telemetry) {
         liftMotor = hardwareMap.get(DcMotor.class, "lift");
 
@@ -30,7 +30,7 @@ public class LiftArm {
         this.telemetry = telemetry;
         telemetry.update();
     }
-
+//setting lift drive powers to vertical power
     public void setLiftDrivePowers(double vp){
         liftMotor.setPower(vp);
     }
@@ -45,7 +45,9 @@ public class LiftArm {
         liftMotor.setTargetPosition(targetPos);
         liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-
+/*if else statement saying that if grippingBlock is true, the gripper is set to 0.5 (half) of it's available range. else,
+    it's set to 0 (none) of it's available range. At the end, grippingBlock is flipped (so if it's true it switches to false).
+    !grippingBlock flips it, = makes it so grippingBlock is flipped.*/
     public void moveGripper(){
         if (grippingBlock){
             gripper.setPosition(0.5);
