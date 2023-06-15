@@ -11,7 +11,6 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 public class Auto extends LinearOpMode {
     private Robot robot;
     private AutoActions actions;
-    private Array
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -29,7 +28,7 @@ public class Auto extends LinearOpMode {
             telemetry.update();
 
         }
-        robot.cam.closeCamera();
+//        robot.cam.closeCamera();
     }
     private void moveTo(int wantX, int wantY) {
         int rightNowX = robot.drive.getX();

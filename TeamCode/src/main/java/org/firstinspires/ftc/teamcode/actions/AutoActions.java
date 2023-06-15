@@ -17,13 +17,13 @@ public class AutoActions {
     }
 
     public void initRobot(){
-        robot.cam.initCamera();
+//        robot.cam.initCamera();
         robot.gyro.reset();
     }
 
     public void getTelemetry(){
-        robot.cam.camTelemetry();
-        robot.cam.pipeline.getTelemetry();
+//        robot.cam.camTelemetry();
+//        robot.cam.pipeline.getTelemetry();
     }
 
     public enum fieldSide{

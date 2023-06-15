@@ -1,13 +1,19 @@
 package org.firstinspires.ftc.teamcode.actions;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
 public class TeleControls {
     Robot robot;
 
-    public TeleControls(Robot bot){
+    Telemetry telemetry;
+
+    public TeleControls(Robot bot, Telemetry telemetry){
         robot = bot;
+        this.telemetry = telemetry;
+
+        telemetry.update();
     }
 
     public void metaDrive (double leftStickX, double leftStickY, double rightStickX){
@@ -27,21 +33,29 @@ public class TeleControls {
         double r = rightStickX;
 
         robot.drive.calculateDrivePowers(y, x, r);
+
+        telemetry.update();
     }
 
     public void resetGyro (boolean bumper1, boolean bumper2){
         if (bumper1 && bumper2)
             robot.gyro.reset();
+
+        telemetry.update();
     }
 
     public void driveLift(double leftStickY){
         if (leftStickY != 0)
-            robot.arm.runLift(leftStickY);
+            robot.arm.moveLift(leftStickY);
+
+        telemetry.update();
     }
 
     public void runArm(boolean button){
         if (button)
-            robot.arm.moveGripper();
+            robot.arm.moveGripper(button);
+
+        telemetry.update();
     }
 
     public void driveLiftToPos(){

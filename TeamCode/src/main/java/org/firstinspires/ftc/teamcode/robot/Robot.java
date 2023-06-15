@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.cv.Camera;
+//import org.firstinspires.ftc.teamcode.cv.Camera;
 import org.firstinspires.ftc.teamcode.robot.drivebase.BallDrive;
 
 /**
@@ -16,9 +16,9 @@ public class Robot {
     public Gyro gyro;
 
     public LiftArm arm;
-    public Claw claw;
+//    public Claw claw;
 
-    public Camera cam;
+//    public Camera cam;
 
     private HardwareMap hardwareMap;
     public Telemetry telemetry;
@@ -31,9 +31,9 @@ public class Robot {
         gyro = new Gyro(hardwareMap);
 
         arm = new LiftArm(hardwareMap, telemetry);
-        claw = new Claw(hardwareMap, telemetry);
+//        claw = new Claw(hardwareMap, telemetry);
 
-        cam = new Camera(hardwareMap, telemetry);
+//        cam = new Camera(hardwareMap, telemetry);
 
     }
 

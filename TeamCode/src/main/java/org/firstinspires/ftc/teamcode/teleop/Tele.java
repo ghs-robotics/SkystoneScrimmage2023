@@ -16,7 +16,7 @@ public class Tele extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot = new Robot(hardwareMap, telemetry);
 
-        controls = new TeleControls(robot);
+        controls = new TeleControls(robot, telemetry);
 
         telemetry.update();
 
@@ -31,7 +31,7 @@ public class Tele extends LinearOpMode {
             // gamepad2
             controls.driveLift(gamepad2.left_stick_y);
             controls.runArm(gamepad2.a);
-
+            // drag tower base - controls.moveBase(gamepad2.x);
 
             telemetry.update();
         }
