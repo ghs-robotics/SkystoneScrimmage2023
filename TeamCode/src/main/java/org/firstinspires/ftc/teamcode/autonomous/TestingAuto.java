@@ -24,6 +24,8 @@ public class TestingAuto extends LinearOpMode {
         while (opModeIsActive()){
             telemetry.addData("zone", actions.cam.getZone());
 
+
+
             actions.getTelemetry();
             telemetry.update();
         }

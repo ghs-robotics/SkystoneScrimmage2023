@@ -11,9 +11,12 @@ public class Auto extends LinearOpMode {
     private AutoActions actions;
 
     private int progression;
+    private int moveCount;
 
-    private int[] xCoords = {1000, 0};
-    private int[] yCoords = {0, 2000};
+    private int[] block = {-600, -400, -200};
+
+    private int[] xCoords = {-200, 2300, 1600};
+    private int[] yCoords = {1500, 0, 1300};
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -29,21 +32,31 @@ public class Auto extends LinearOpMode {
         telemetry.update();
 
         while (opModeIsActive()){
-
+            moveCount = actions.getMoveCount();
             progression = actions.getProgression();
 
-            switch (progression){
-                case 0:
-                    actions.move(0, 500);
-                    break;
-                case 1:
-                    actions.move(500, 0);
-            }
+
+
+//            switch (progression){
+//                case 0:
+//                    move();
+//                    break;
+//                case 1:
+//                    move();
+//                    break;
+//                case 2:
+//                    move();
+//                    break;
+//            }
 
 
             actions.getTelemetry();
             telemetry.update();
         }
         actions.cam.closeCamera();
+    }
+
+    private void move(){
+        actions.move(xCoords[moveCount], yCoords[moveCount]);
     }
 }

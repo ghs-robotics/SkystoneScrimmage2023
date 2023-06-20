@@ -9,6 +9,7 @@ public class AutoActions extends Robot{
     fieldSide side;
 
     int progression = 0;
+    int moveCount = 0;
 
     public AutoActions(HardwareMap hardwareMap, Telemetry telemetry, fieldSide side){
         super(hardwareMap, telemetry);
@@ -17,6 +18,10 @@ public class AutoActions extends Robot{
 
     public int getProgression(){
         return progression;
+    }
+
+    public int getMoveCount(){
+        return moveCount;
     }
 
     public void initRobot(){
@@ -36,7 +41,11 @@ public class AutoActions extends Robot{
         telemetry.addData("y ", drive.getPosition()[1]);
     }
 
-    public void move(int targetX, int targetY){
+    public void runGripper(){
+        arm.moveGripper();
+    }
+
+    public void move(int targetX, int targetY) {
         int currentX = drive.getPosition()[0];
         int currentY = drive.getPosition()[1];
 
@@ -56,18 +65,20 @@ public class AutoActions extends Robot{
         double yPower = 0;
 
 
-        if (Math.abs(xDiff) > error){
+        if (Math.abs(xDiff) > error) {
             xPower = (xDiff / divider);
         }
 
-        if (Math.abs(yDiff) > error){
+        if (Math.abs(yDiff) > error) {
             yPower = (yDiff / divider);
         }
 
         drive.calculateDrivePowers(xPower, yPower, 0);
 
-        if (xPower + yPower == 0)
+        if (xPower + yPower == 0){
             progression++;
+            moveCount++;
+        }
     }
 
     public enum fieldSide{

@@ -66,7 +66,7 @@ public class TestingPipeline extends OpenCvPipeline {
 
         display = processHSV(hsv);
 
-        display = seeBlock();
+//        display = seeBlock();
 
         checkZone();
 
@@ -92,8 +92,8 @@ public class TestingPipeline extends OpenCvPipeline {
         Imgproc.findContours(binary, pointsOfContour, contour, 3,1);
 
 
-//        Imgproc.drawContours(mask, pointsOfContour, -1, color, 2, Imgproc.LINE_8,
-//                contour, 2, new Point());
+        Imgproc.drawContours(mask, pointsOfContour, -1, color, 2, Imgproc.LINE_8,
+                contour, 2, new Point());
 
         return contour;
 
