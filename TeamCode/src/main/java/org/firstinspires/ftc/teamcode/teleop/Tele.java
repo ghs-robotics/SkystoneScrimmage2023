@@ -26,13 +26,10 @@ public class Tele extends LinearOpMode {
 
         while (opModeIsActive()){
 
-            controls.metaDrive(gamepad1.left_stick_x, gamepad1.right_stick_y, gamepad1.right_stick_x);
+            controls.regularDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
 
             controls.resetGyro(gamepad1.left_bumper, gamepad1.right_bumper);
 
-            telemetry.addData("1", robot.gyro.getHeading(AngleUnit.DEGREES));
-//            telemetry.addData("2", robot.gyro.getSecond(AngleUnit.DEGREES));
-//            telemetry.addData("3", robot.gyro.getThird(AngleUnit.DEGREES));
             telemetry.update();
         }
     }

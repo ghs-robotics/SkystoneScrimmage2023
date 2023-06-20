@@ -22,11 +22,7 @@ public class TeleControls {
     }
 
     public void regularDrive (double leftStickX, double leftStickY, double rightStickX){
-        double y = leftStickY;
-        double x = leftStickX;
-        double r = rightStickX;
-
-        robot.drive.calculateDrivePowers(y, x, r);
+        robot.drive.calculateDrivePowers(leftStickX, leftStickY, rightStickX);
     }
 
     public void resetGyro (boolean bumper1, boolean bumper2){

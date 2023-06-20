@@ -17,13 +17,13 @@ public class Auto extends LinearOpMode {
 
 
         telemetry.addData("Status", "Initialized");
+        actions.initRobot();
         telemetry.update();
         waitForStart();
 
-        actions.initRobot();
-
+        actions.prepRobot();
+        telemetry.update();
         while (opModeIsActive()){
-            actions.move(500, 500);
 
 
             actions.getTelemetry();
