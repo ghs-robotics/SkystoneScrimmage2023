@@ -5,10 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.actions.AutoActions;
-import org.firstinspires.ftc.teamcode.robot.Robot;
 
 @Autonomous
-public class Auto extends LinearOpMode {
+public class TestingAuto extends LinearOpMode {
     private AutoActions actions;
 
     @Override
@@ -23,8 +22,7 @@ public class Auto extends LinearOpMode {
         actions.initRobot();
 
         while (opModeIsActive()){
-            actions.move(500, 500);
-
+            telemetry.addData("zone", actions.cam.getZone());
 
             actions.getTelemetry();
             telemetry.update();

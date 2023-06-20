@@ -18,6 +18,7 @@ import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.U
 import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.UPPER_G;
 import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.UPPER_R;
 
+import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -50,8 +51,7 @@ public class TestingPipeline extends OpenCvPipeline {
 
     Mat mask = new Mat();
 
-    boolean zone1;
-    boolean zone2;
+    int zone;
 
     public TestingPipeline (OpenCvCamera camera, Telemetry telemetry){
         cam = camera;
@@ -64,26 +64,21 @@ public class TestingPipeline extends OpenCvPipeline {
         Imgproc.cvtColor(input, grayscale, Imgproc.COLOR_BGR2GRAY, 3);
         Imgproc.cvtColor(input, hsv, Imgproc.COLOR_BGR2HSV, 3);
 
-        if (FILTER_TYPE == 0)
-            display = processBGR(rgb);
-        else if (FILTER_TYPE == 1)
-            display = processGray(grayscale);
-        else
-            display = processHSV(hsv);
+        display = processHSV(hsv);
 
-        if (CANNY)
-            Imgproc.Canny(display, display, 100, 122, 3, false);
+        display = seeBlock();
+
+        checkZone();
 
         return display;
     }
 
+    public void checkZone(){
+
+    }
+
     public int getZone(){
-        if (zone1)
-            return 1;
-        else if (zone2)
-            return 2;
-        else
-            return 3;
+        return zone;
     }
 
     public Mat seeBlock(){
@@ -96,22 +91,13 @@ public class TestingPipeline extends OpenCvPipeline {
         Imgproc.threshold(mask, binary, 100, 255, Imgproc.THRESH_BINARY_INV);
         Imgproc.findContours(binary, pointsOfContour, contour, 3,1);
 
-        Imgproc.drawContours(mask, pointsOfContour, -1, color, 2, Imgproc.LINE_8,
-                contour, 2, new Point());
+
+//        Imgproc.drawContours(mask, pointsOfContour, -1, color, 2, Imgproc.LINE_8,
+//                contour, 2, new Point());
 
         return contour;
 
     }
-
-//
-//    private void setBlobParams(){
-//    }
-//
-//
-//    private void detectBlob(Mat in){
-//
-//    }
-
 
     private Mat processBGR(Mat input){
         Scalar lower = new Scalar(LOWER_B, LOWER_G, LOWER_R);

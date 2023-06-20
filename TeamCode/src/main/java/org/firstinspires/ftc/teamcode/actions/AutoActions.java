@@ -1,19 +1,16 @@
 package org.firstinspires.ftc.teamcode.actions;
 
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
-public class AutoActions {
-    Robot robot;
+public class AutoActions extends Robot{
     fieldSide side;
 
-    public static final int INIT = 0;
-    public static final int MOVE = 1;
-    public static final int GRIP = 2;
-    public static final int LIFT = 3;
-
-    public AutoActions(Robot bot, fieldSide side){
-        robot = bot;
+    public AutoActions(HardwareMap hardwareMap, Telemetry telemetry, fieldSide side){
+        super(hardwareMap, telemetry);
         this.side = side;
     }
 
@@ -22,13 +19,35 @@ public class AutoActions {
     }
 
     public void initRobot(){
-        robot.cam.initCamera();
-        robot.gyro.reset();
+        cam.initCamera();
+        gyro.reset();
     }
 
     public void getTelemetry(){
-        robot.cam.camTelemetry();
-        robot.cam.pipeline.getTelemetry();
+        cam.camTelemetry();
+        cam.pipeline.getTelemetry();
+    }
+
+    public void move(int targetX, int targetY){
+        int currentX = drive.getPosition()[0];
+        int currentY = drive.getPosition()[1];
+
+        int xDiff = targetX - currentX;
+        int yDiff = targetY - currentY;
+
+        double xPower = 0;
+        double yPower = 0;
+
+
+        if (Math.abs(xDiff) > 20){
+            xPower = Math.pow((xDiff / 100.0), 3);
+        }
+
+        if (Math.abs(yDiff) > 20){
+            yPower = Math.pow((yDiff / 100.0), 3);
+        }
+
+        drive.calculateDrivePowers(xPower, yPower, 0);
     }
 
     public enum fieldSide{
