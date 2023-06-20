@@ -6,12 +6,15 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
 public class AutoActions extends Robot{
-    fieldSide side;
+    int side;
+
+    public static final int LEFT = 1;
+    public static final int RIGHT = -1;
 
     int progression = 0;
     int moveCount = 0;
 
-    public AutoActions(HardwareMap hardwareMap, Telemetry telemetry, fieldSide side){
+    public AutoActions(HardwareMap hardwareMap, Telemetry telemetry, int side){
         super(hardwareMap, telemetry);
         this.side = side;
     }
@@ -35,8 +38,8 @@ public class AutoActions extends Robot{
     }
 
     public void getTelemetry(){
-//        cam.camTelemetry();
-//        cam.pipeline.getTelemetry();
+        cam.camTelemetry();
+        cam.pipeline.getTelemetry();
         telemetry.addData("x ", drive.getPosition()[0]);
         telemetry.addData("y ", drive.getPosition()[1]);
     }
@@ -46,7 +49,7 @@ public class AutoActions extends Robot{
     }
 
     public void move(int targetX, int targetY) {
-        int currentX = drive.getPosition()[0];
+        int currentX = drive.getPosition()[0] * side;
         int currentY = drive.getPosition()[1];
 
         int xDiff = targetX - currentX;
@@ -81,9 +84,5 @@ public class AutoActions extends Robot{
         }
     }
 
-    public enum fieldSide{
-        LEFT,
-        RIGHT
-    }
 }
 

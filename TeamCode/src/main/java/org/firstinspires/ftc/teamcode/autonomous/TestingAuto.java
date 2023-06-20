@@ -12,7 +12,7 @@ public class TestingAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        actions = new AutoActions(hardwareMap, telemetry, AutoActions.fieldSide.LEFT);
+        actions = new AutoActions(hardwareMap, telemetry, AutoActions.LEFT);
 
 
         telemetry.addData("Status", "Initialized");

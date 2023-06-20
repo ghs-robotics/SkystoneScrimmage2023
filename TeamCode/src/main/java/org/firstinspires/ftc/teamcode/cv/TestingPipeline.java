@@ -6,24 +6,30 @@ import static org.firstinspires.ftc.teamcode.cv.dashboard.CVTestingSettings.FILT
 import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.BLOCK_DARK_H;
 import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.BLOCK_DARK_S;
 import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.BLOCK_DARK_V;
-import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.GRAY_LOWER;
-import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.GRAY_UPPER;
 import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.BLOCK_LIGHT_H;
 import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.BLOCK_LIGHT_S;
 import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.BLOCK_LIGHT_V;
-import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.LOWER_B;
-import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.LOWER_G;
-import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.LOWER_R;
-import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.UPPER_B;
-import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.UPPER_G;
-import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.UPPER_R;
+import static org.opencv.core.CvType.CV_8UC1;
+import static org.opencv.core.CvType.CV_8UC3;
+//import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.GRAY_LOWER;
+//import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.GRAY_UPPER;
+//import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.LOWER_B;
+//import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.LOWER_G;
+//import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.LOWER_R;
+//import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.UPPER_B;
+//import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.UPPER_G;
+//import static org.firstinspires.ftc.teamcode.cv.dashboard.ColorFilterConstants.UPPER_R;
+
+import android.graphics.Color;
 
 import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.features2d.SimpleBlobDetector;
 import org.opencv.features2d.SimpleBlobDetector_Params;
@@ -44,7 +50,6 @@ public class TestingPipeline extends OpenCvPipeline {
 
     Telemetry telemetry;
 
-    Mat grayscale = new Mat();
     Mat hsv = new Mat();
     Mat rgb = new Mat();
     Mat display = new Mat();
@@ -60,13 +65,11 @@ public class TestingPipeline extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
-        rgb = input;
-        Imgproc.cvtColor(input, grayscale, Imgproc.COLOR_BGR2GRAY, 3);
-        Imgproc.cvtColor(input, hsv, Imgproc.COLOR_BGR2HSV, 3);
+        this.rgb = input;
 
-        display = processHSV(hsv);
+        //processHSV(hsv);
 
-//        display = seeBlock();
+        display = seeBlock();
 
         checkZone();
 
@@ -74,60 +77,36 @@ public class TestingPipeline extends OpenCvPipeline {
     }
 
     public void checkZone(){
-
-    }
-
-    public int getZone(){
-        return zone;
     }
 
     public Mat seeBlock(){
-        Scalar color = new Scalar(0, 0, 0);
+        Scalar lightRange = new Scalar(BLOCK_LIGHT_H, BLOCK_LIGHT_S, BLOCK_LIGHT_V);
+        Scalar darkRange = new Scalar(BLOCK_DARK_S, BLOCK_DARK_H, BLOCK_DARK_V);
 
-        Mat binary = new Mat(mask.rows(), mask.cols(), mask.type(), new Scalar(0));
+        Core.inRange(rgb, lightRange, darkRange, mask);
+
+//        Mat contour = new Mat(mask.rows(), mask.cols(), mask.type(), new Scalar(0));
         Mat contour = new Mat();
-        ArrayList<MatOfPoint> pointsOfContour = new ArrayList<MatOfPoint>();
+        ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 
-        Imgproc.threshold(mask, binary, 100, 255, Imgproc.THRESH_BINARY_INV);
-        Imgproc.findContours(binary, pointsOfContour, contour, 3,1);
+        Rect largestRect = new Rect(0,0,1,1);
+
+        Imgproc.findContours(mask, contours, contour, 3,2);
 
 
-        Imgproc.drawContours(mask, pointsOfContour, -1, color, 2, Imgproc.LINE_8,
-                contour, 2, new Point());
+        for (int i = 0; i < contours.size() - 1; i++) {
+            Rect rect = Imgproc.boundingRect(contours.get(i));
+            if (largestRect.area() < rect.area() && isReasonable(rect.width, rect.height)) {
+                largestRect = rect;
+            }
+        }
+
+        Imgproc.rectangle(rgb, largestRect, new Scalar(0, 0, 255), 2);
 
         return contour;
 
     }
 
-    private Mat processBGR(Mat input){
-        Scalar lower = new Scalar(LOWER_B, LOWER_G, LOWER_R);
-        Scalar upper = new Scalar(UPPER_B, UPPER_G, UPPER_R);
-        if (FILTER)
-            Core.inRange(input, lower, upper, input);
-
-        return input;
-    }
-
-    private Mat processGray(Mat input){
-        Scalar lower = new Scalar(GRAY_LOWER);
-        Scalar upper = new Scalar(GRAY_UPPER);
-
-        if (FILTER)
-            Core.inRange(input, lower, upper, input);
-
-        return input;
-    }
-
-    private Mat processHSV(Mat input){
-        Scalar lightRange = new Scalar(BLOCK_LIGHT_H, BLOCK_LIGHT_S, BLOCK_LIGHT_V);
-        Scalar darkRange = new Scalar(BLOCK_DARK_S, BLOCK_DARK_H, BLOCK_DARK_V);
-
-        if (FILTER) {
-            Core.inRange(input, lightRange, darkRange, mask);
-            Core.inRange(input, lightRange, darkRange, input);
-        }
-        return input;
-    }
 
     @Override
     public void onViewportTapped() {
@@ -140,6 +119,14 @@ public class TestingPipeline extends OpenCvPipeline {
 
     }
 
+    public int getZone(){
+        return zone;
+    }
+
+    boolean isReasonable(int w, int h) {
+        return w > 10 && h > 10;
+    }
+
     public void getTelemetry(){
         telemetry.addLine();
         telemetry.addLine("Pipeline telemetry");
@@ -147,27 +134,4 @@ public class TestingPipeline extends OpenCvPipeline {
         telemetry.addData("dump:     ", display.dump());
         telemetry.addLine();
     }
-
-//    public boolean tuneCamera(){
-    // find function that will
-    // idea - compare the camera input to a pre-existing mat
-//        Mat input = hsv;
-//        boolean endFun = false;
-//
-//        int hDiff = 0;
-//        int sDiff = 0;
-//        int vDiff = 0;
-//        if (input != constantMat){
-//            hDiff = input - constantMat;
-//            sDiff = input - constantMat;
-//            vDiff = input - constantMat;
-//
-//            telemetry.addData("h difference", hDiff);
-//            telemetry.addData("s difference", sDiff);
-//            telemetry.addData("v difference", vDiff);
-//        }else
-//            telemetry.addLine("no diff");
-//
-//        return !endFun;
-//    }
 }
