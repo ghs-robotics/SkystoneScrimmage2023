@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.robot;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -14,8 +15,7 @@ public class Arm {
 
     private DcMotor liftMotor;
 
-    private Servo leftGripper;
-    private Servo rightGripper;
+    private Servo gripper;
 
     Telemetry telemetry;
 
@@ -24,9 +24,10 @@ public class Arm {
 
     public Arm(HardwareMap hardwareMap, Telemetry telemetry) {
         liftMotor = hardwareMap.get(DcMotor.class, "lift");
+        liftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        leftGripper = hardwareMap.get(Servo.class, "lgripper");
-        rightGripper = hardwareMap.get(Servo.class, "rgripper");
+        gripper = hardwareMap.get(Servo.class, "gripper");
+        gripper.setDirection(Servo.Direction.FORWARD);
 
         this.telemetry = telemetry;
         telemetry.update();
@@ -38,7 +39,11 @@ public class Arm {
 
     public void runLift (double x) {
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        double verticalPower = x;
+        double verticalPower = -x;
+        if ((liftMotor.getCurrentPosition() <= 0 && verticalPower < 0) ||
+                (liftMotor.getCurrentPosition() >= 1000 && verticalPower > 0))
+            verticalPower = 0;
+
         setLiftDrivePowers(verticalPower);
     }
 
@@ -49,11 +54,9 @@ public class Arm {
 
     public void moveGripper(){
         if (grippingBlock){
-            leftGripper.setPosition(0.5);
-            rightGripper.setPosition(0);
+            gripper.setPosition(0.5);
         } else {
-            leftGripper.setPosition(0);
-            rightGripper.setPosition(0.5);
+            gripper.setPosition(-1);
         }
 
         grippingBlock = !grippingBlock;

@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.actions;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 
 public class AutoActions extends Robot{
@@ -16,11 +15,7 @@ public class AutoActions extends Robot{
         this.side = side;
     }
 
-    public void runSet(){
-
-    }
-
-    public int getSet(){
+    public int getProgression(){
         return progression;
     }
 
