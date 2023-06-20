@@ -13,9 +13,11 @@ public class ReadWrite {
     private static Scanner autoInstructions;
     private static Scanner hsvConstants;
 
+    private final String directory = "/";
+
     public ReadWrite(){
-        hsvC = new File("teamcode/constants/HSVConstants.txt");
-        autoI = new File("teamcode/constants/AutoInstruction.txt");
+        hsvC = new File(directory + "HSVConstants.txt");
+        autoI = new File(directory + "AutoInstruction.txt");
 
         try {
             hsvConstants = new Scanner(hsvC);

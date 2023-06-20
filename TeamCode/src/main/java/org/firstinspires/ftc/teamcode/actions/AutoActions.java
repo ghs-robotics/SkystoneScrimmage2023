@@ -7,6 +7,11 @@ public class AutoActions {
     Robot robot;
     fieldSide side;
 
+    public static final int INIT = 0;
+    public static final int MOVE = 1;
+    public static final int GRIP = 2;
+    public static final int LIFT = 3;
+
     public AutoActions(Robot bot, fieldSide side){
         robot = bot;
         this.side = side;

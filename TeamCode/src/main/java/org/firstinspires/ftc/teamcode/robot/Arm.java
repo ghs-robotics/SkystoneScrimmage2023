@@ -10,6 +10,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHH
 
 public class Arm {
+    public static final int lower = 20;
+
     private DcMotor liftMotor;
 
     private Servo leftGripper;
