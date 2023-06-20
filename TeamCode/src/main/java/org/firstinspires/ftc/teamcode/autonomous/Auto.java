@@ -9,24 +9,26 @@ import org.firstinspires.ftc.teamcode.robot.Robot;
 
 @Autonomous
 public class Auto extends LinearOpMode {
-    private Robot robot;
     private AutoActions actions;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        robot = new Robot(hardwareMap, telemetry);
-        actions = new AutoActions(robot, AutoActions.fieldSide.LEFT);
+        actions = new AutoActions(hardwareMap, telemetry, AutoActions.fieldSide.LEFT);
 
-        actions.initRobot();
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
 
+        actions.initRobot();
+
         while (opModeIsActive()){
+            actions.move(500, 500);
+
+
             actions.getTelemetry();
             telemetry.update();
         }
-        robot.cam.closeCamera();
+        actions.cam.closeCamera();
     }
 }
