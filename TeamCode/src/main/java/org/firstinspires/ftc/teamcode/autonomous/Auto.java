@@ -15,12 +15,12 @@ public class Auto extends LinearOpMode {
 
     private int[] block = {-600, -400, -200};
 
-    private int[] xCoords = {-200, 2300, 1600};
-    private int[] yCoords = {1500, 0, 1300};
+    private int[] xCoords = {-200, 2300, 1600, 1700};
+    private int[] yCoords = {1500, 0, 1300, 0};
 
     @Override
     public void runOpMode() throws InterruptedException {
-        actions = new AutoActions(hardwareMap, telemetry, AutoActions.LEFT);
+        actions = new AutoActions(hardwareMap, telemetry, AutoActions.RIGHT);
 
 
         telemetry.addData("Status", "Initialized");
@@ -37,17 +37,17 @@ public class Auto extends LinearOpMode {
 
 
 
-//            switch (progression){
-//                case 0:
-//                    move();
-//                    break;
-//                case 1:
-//                    move();
-//                    break;
-//                case 2:
-//                    move();
-//                    break;
-//            }
+            switch (progression){
+                case 0:
+                    move();
+                    break;
+                case 1:
+                    move();
+                    break;
+                case 2:
+                    move();
+                    break;
+            }
 
 
             actions.getTelemetry();

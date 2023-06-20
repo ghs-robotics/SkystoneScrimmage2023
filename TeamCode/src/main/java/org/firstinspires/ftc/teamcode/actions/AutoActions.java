@@ -38,10 +38,10 @@ public class AutoActions extends Robot{
     }
 
     public void getTelemetry(){
-        cam.camTelemetry();
-        cam.pipeline.getTelemetry();
         telemetry.addData("x ", drive.getPosition()[0]);
         telemetry.addData("y ", drive.getPosition()[1]);
+        cam.camTelemetry();
+        cam.pipeline.getTelemetry();
     }
 
     public void runGripper(){
@@ -49,10 +49,10 @@ public class AutoActions extends Robot{
     }
 
     public void move(int targetX, int targetY) {
-        int currentX = drive.getPosition()[0] * side;
+        int currentX = drive.getPosition()[0];
         int currentY = drive.getPosition()[1];
 
-        int xDiff = targetX - currentX;
+        int xDiff = (targetX - currentX) * side;
         int yDiff = targetY - currentY;
 
         if (targetX == 0)

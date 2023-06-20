@@ -67,9 +67,12 @@ public class TestingPipeline extends OpenCvPipeline {
     public Mat processFrame(Mat input) {
         this.rgb = input;
 
-        //processHSV(hsv);
+        Scalar lightRange = new Scalar(BLOCK_LIGHT_H, BLOCK_LIGHT_S, BLOCK_LIGHT_V);
+        Scalar darkRange = new Scalar(BLOCK_DARK_S, BLOCK_DARK_H, BLOCK_DARK_V);
 
-        display = seeBlock();
+        Core.inRange(rgb, lightRange, darkRange, display);
+
+//        display = seeBlock();
 
         checkZone();
 
